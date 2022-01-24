@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.controller;
+package com.prithu.sim.controller;
 
-import com.prithu.demo.entity.Subject;
-import com.prithu.demo.repository.SubjectRepository;
+import com.prithu.sim.dto.Subject;
+import com.prithu.sim.repository.SubjectRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

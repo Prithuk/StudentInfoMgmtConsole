@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.controller;
+package com.prithu.sim.controller;
 
-import com.prithu.demo.entity.Student;
-import com.prithu.demo.repository.MarksRepository;
-import com.prithu.demo.repository.StudentRepository;
+import com.prithu.sim.dto.Student;
+import com.prithu.sim.repository.MarksRepository;
+import com.prithu.sim.repository.StudentRepository;
 import java.util.List;
 import java.util.Scanner;
 

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.demo.repository;
+package com.prithu.sim.repository;
 
-import com.prithu.demo.entity.Student;
+import com.prithu.sim.dto.Student;
 import java.util.ArrayList;
 import java.util.List;
 

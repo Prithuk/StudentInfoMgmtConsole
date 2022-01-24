@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.controller;
+package com.prithu.sim.controller;
 
-import static com.prithu.controller.SubjectController.subjectRepository;
-import static com.prithu.controller.StudentController.studentRepository;
+import static com.prithu.sim.controller.SubjectController.subjectRepository;
+import static com.prithu.sim.controller.StudentController.studentRepository;
 
-import com.prithu.demo.entity.Marks;
-import com.prithu.demo.entity.Student;
-import com.prithu.demo.entity.Subject;
-import com.prithu.demo.repository.MarksRepository;
+import com.prithu.sim.dto.Marks;
+import com.prithu.sim.dto.Student;
+import com.prithu.sim.dto.Subject;
+import com.prithu.sim.repository.MarksRepository;
 import java.util.Scanner;
 
 /**

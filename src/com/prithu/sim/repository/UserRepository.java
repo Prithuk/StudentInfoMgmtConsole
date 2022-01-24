@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.demo.repository;
+package com.prithu.sim.repository;
 
-import com.prithu.demo.entity.User;
+import com.prithu.sim.dto.User;
+import com.prithu.sim.util.DbUtil;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import java.util.List;
 
 public class UserRepository {
 
+    PreparedStatement ps = null;
     private List<User> userList = new ArrayList<>();
 
     public List<User> getUserList() {
@@ -34,7 +39,7 @@ public class UserRepository {
             }
         }
         userList.add(user);
-        
+
     }
 
     public void editUsers(User user) {
@@ -50,12 +55,19 @@ public class UserRepository {
 
     public Long getMaxID() {
         Long max = 0L;
-        for (User u : userList) {
-            if (u.getId() > max) {
-                max = u.getId();
+        try {
+            String sql = "select max(id) from user_info";
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = (ResultSet) ps.executeQuery(sql);
+
+            if (rs.next()) {
+                max = rs.getLong(1);
             }
+        } catch (Exception e) {
+            System.out.println("Exception" + e.getMessage());
         }
         return max;
+
     }
 
     public boolean isUniqueUserName(String username) {

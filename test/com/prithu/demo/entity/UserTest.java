@@ -5,8 +5,9 @@
  */
 package com.prithu.demo.entity;
 
-import com.prithu.demo.repository.MarksRepository;
-import com.prithu.demo.repository.UserRepository;
+import com.prithu.sim.dto.User;
+import com.prithu.sim.repository.MarksRepository;
+import com.prithu.sim.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;

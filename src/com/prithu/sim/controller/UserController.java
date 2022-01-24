@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prithu.controller;
+package com.prithu.sim.controller;
 
-import static com.prithu.controller.StudentController.sc;
-import com.prithu.demo.entity.Student;
-import com.prithu.demo.entity.User;
-import com.prithu.demo.repository.MarksRepository;
-import com.prithu.demo.repository.StudentRepository;
-import com.prithu.demo.repository.UserRepository;
+import com.prithu.sim.dao.UserDao;
+import com.prithu.sim.dao.UserDaoImpl;
+import com.prithu.sim.dto.Student;
+import com.prithu.sim.dto.User;
+import com.prithu.sim.repository.MarksRepository;
+import com.prithu.sim.repository.StudentRepository;
+import com.prithu.sim.repository.UserRepository;
 import static java.lang.System.exit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,11 +25,13 @@ public class UserController {
     static StudentRepository studentRepository = new StudentRepository();
     static MarksController marksController = new MarksController();
     static MarksRepository marksRepository = new MarksRepository();
+    static UserDao userDao = new UserDaoImpl();
 
     static String uName = "";
     static long id = 0;
 
     public static void printMenu(String[] options) {
+
         for (String option : options) {
             System.out.println(option);
         }
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     public static void main(String[] args) {
+
         String[] options = {
             "1-Admin",
             "1.1-Users Register \n 1.2-Search Users \n 1.3-Edit Users \n 1.4-List Users \n 1.5-Exit \n",
@@ -59,7 +62,8 @@ public class UserController {
                 switch (option) {
                     case "1.1":
                         User user = usersRegister();
-                        userRepository.createUser(user);
+
+//                        userRepository.createUser(user);
                         break;
                     case "1.2":
                         System.out.println("Enter User name");
@@ -134,7 +138,8 @@ public class UserController {
 
         User user = new User();
 
-        user.setId(userRepository.getMaxID() + 1);
+        Long maxId = userRepository.getMaxID();
+        user.setId(maxId + 1);
         System.out.println("User id is : " + user.getId());
 
         System.out.println("Enter User name");
@@ -145,19 +150,27 @@ public class UserController {
         String uPassword = sc.next();
         user.setPassword(uPassword);
 
-        System.out.println(user.toString());
+        userDao.saveUserInfo(user);
+
+//        System.out.println(user.toString());
         return user;
 
     }
 
     public static void searchUsers(String username) {
-        for (User user : userRepository.getUserList()) {
-            if (user.getName().equals(username)) {
-                System.out.println(user.toString());
-                return;
-            }
+
+        User user = userDao.searchUser(username);
+        if (user == null) {
+            System.out.println("User not found");
+        } else {
+            System.out.println(user.toString());
         }
-        System.out.println("User not found");
+//        for (User user : userRepository.getUserList()) {
+//            if (user.getName().equals(username)) {
+//                System.out.println(user.toString());
+//                return;
+//            }
+//        }
     }
 
     public static User editUsers(String username) {
