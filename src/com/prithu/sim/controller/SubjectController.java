@@ -5,6 +5,8 @@
  */
 package com.prithu.sim.controller;
 
+import com.prithu.sim.dao.SubjectDao;
+import com.prithu.sim.dao.SubjectDaoImpl;
 import com.prithu.sim.dto.Subject;
 import com.prithu.sim.repository.SubjectRepository;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class SubjectController {
     Scanner sc = new Scanner(System.in);
     Subject subject = new Subject();
     static SubjectRepository subjectRepository = new SubjectRepository();
+    static SubjectDao subjectDao = new SubjectDaoImpl();
 
     public void addSubject() {
 
@@ -26,8 +29,11 @@ public class SubjectController {
             String name = sc.next();
             subject.setSubName(name);
             subject.setId(subjectRepository.getSubmaxId() + 1);
-            subjectRepository.getSubjectList().add(subject);
-            System.out.println(subject.toString());
+
+            subjectDao.addSubject(subject);
+
+//            subjectRepository.getSubjectList().add(subject);
+//            System.out.println(subject.toString());
         }
 
     }
