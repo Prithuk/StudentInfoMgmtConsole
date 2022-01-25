@@ -39,15 +39,23 @@ public class SubjectController {
     }
 
     public void viewSubject() {
-        List<Subject> subjectList = subjectRepository.getSubjectList();
-
+        List<Subject> subjectList = subjectDao.viewSubject();
         if (subjectList.isEmpty()) {
             System.out.println("Register at least one subject : ");
-        }
-        for (Subject subject : subjectRepository.getSubjectList()) {
-            subject.getSubName();
-            System.out.println(subject.toString());
+        } else {
+
+            System.out.println(subjectList.toString());
         }
     }
 
+//        List<Subject> subjectList = subjectRepository.getSubjectList();
+//
+//        if (subjectList.isEmpty()) {
+//            System.out.println("Register at least one subject : ");
+//        }
+//        for (Subject subject : subjectRepository.getSubjectList()) {
+//            subject.getSubName();
+//            System.out.println(subject.toString());
+//        }
+//    }
 }

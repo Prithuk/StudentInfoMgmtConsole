@@ -8,7 +8,10 @@ package com.prithu.sim.dao;
 import com.prithu.sim.dto.Subject;
 import com.prithu.sim.util.DbUtil;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +38,24 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public void viewSubject() {
+    public List<Subject> viewSubject() {
+        String sql = "select * from Subject";
+        List<Subject> subjectList = new ArrayList<>();
+
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getLong(1));
+                subject.setSubName(rs.getString(2));
+                subjectList.add(subject);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return subjectList;
+
     }
 
     @Override

@@ -6,6 +6,7 @@
 package com.prithu.sim.dao;
 
 import com.prithu.sim.dto.Subject;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,7 @@ import com.prithu.sim.dto.Subject;
 public interface SubjectDao {
     
     public void addSubject(Subject subject); 
-    public void viewSubject(); 
+    public List<Subject> viewSubject(); 
     public void AddMarks(); 
     
 }
