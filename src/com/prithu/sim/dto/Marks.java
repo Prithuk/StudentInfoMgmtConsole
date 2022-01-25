@@ -13,9 +13,11 @@ import java.util.Objects;
  */
 public class Marks {
 
+    private Long id ; 
     private Long studentId;
     private Long subjectId;
     private float subMarks;
+    
 
     public Marks() {
     }
@@ -26,6 +28,15 @@ public class Marks {
         this.subMarks = subMarks;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
     public Long getStudentId() {
         return studentId;
     }

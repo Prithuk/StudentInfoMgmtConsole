@@ -7,6 +7,8 @@ package com.prithu.sim.controller;
 
 import static com.prithu.sim.controller.SubjectController.subjectRepository;
 import static com.prithu.sim.controller.StudentController.studentRepository;
+import com.prithu.sim.dao.MarksDao;
+import com.prithu.sim.dao.MarksDaoImpl;
 
 import com.prithu.sim.dto.Marks;
 import com.prithu.sim.dto.Student;
@@ -20,6 +22,7 @@ import java.util.Scanner;
  */
 public class MarksController {
 
+    MarksDao marksDao = new MarksDaoImpl();
     Scanner sc = new Scanner(System.in);
     //static StudentRepository studentRepository = new StudentRepository();
 
@@ -47,7 +50,9 @@ public class MarksController {
                 System.out.println("Enter marks for subject :" + subject.getSubName());
                 float submarks = sc.nextFloat();
                 Marks marks = new Marks(student.getsID(), subject.getId(), submarks);
-                marksRepository.getMarkList().add(marks);
+                marksDao.addMarks(marks);
+//                marksRepository.getMarkList().add(marks);
+
             }
         }
     }

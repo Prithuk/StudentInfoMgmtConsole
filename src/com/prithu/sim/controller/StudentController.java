@@ -67,7 +67,6 @@ public class StudentController {
 
             System.out.println(studentList.toString());
         }
-
     }
 
     public void viewStudentClass(int id, String username) {

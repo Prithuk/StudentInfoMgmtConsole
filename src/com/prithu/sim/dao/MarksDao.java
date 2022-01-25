@@ -5,16 +5,10 @@
  */
 package com.prithu.sim.dao;
 
-import com.prithu.sim.dto.Subject;
-import java.util.List;
-
 /**
  *
  * @author lion
  */
-public interface SubjectDao {
-    
-    public void addSubject(Subject subject); 
-    public List<Subject> viewSubject(); 
+public interface MarksDao {
     
 }

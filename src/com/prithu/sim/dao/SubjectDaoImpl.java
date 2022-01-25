@@ -58,8 +58,4 @@ public class SubjectDaoImpl implements SubjectDao {
 
     }
 
-    @Override
-    public void AddMarks() {
-    }
-
 }
