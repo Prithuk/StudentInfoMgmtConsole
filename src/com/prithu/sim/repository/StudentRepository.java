@@ -5,7 +5,10 @@
  */
 package com.prithu.sim.repository;
 
+import java.sql.ResultSet;
 import com.prithu.sim.dto.Student;
+import com.prithu.sim.util.DbUtil;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
  */
 public class StudentRepository {
 
+    PreparedStatement ps = null;
     private List<Student> studentList = new ArrayList<>();
 
     public List<Student> getStudentList() {
@@ -32,13 +36,19 @@ public class StudentRepository {
 
     public Long getSmaxId() {
         Long max = 100L;
-        for (Student s : studentList) {
-            if (s.getsID() > max) {
-                max = s.getsID();
+        String sql = "select max(student_id) from student_info";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                max = rs.getLong(1);
             }
-        }
-        return max;
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return max;
     }
 
 //    public Student findByStudentId(Long id) {

@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserRepository {
 
@@ -43,13 +45,16 @@ public class UserRepository {
     }
 
     public void editUsers(User user) {
-        for (User u : userList) {
-            if (u.getId().equals(user.getId())) {
-                u.setId(user.getId());
-                u.setName(user.getName());
-                u.setPassword(user.getPassword());
-                return;
-            }
+        String sql = "update user_info set name=?, password=? where id=?";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
+            ps.setLong(3, user.getId());
+
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

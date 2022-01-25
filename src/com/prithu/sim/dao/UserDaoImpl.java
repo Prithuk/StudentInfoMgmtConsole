@@ -10,9 +10,8 @@ import com.prithu.sim.util.DbUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -42,7 +41,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAllUserInfo() {
-        return null;
+
+        String sql = "Select * from user_info";
+        List<User> userList = new ArrayList<>();
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong(1));
+                user.setName(rs.getString(2));
+                user.setPassword(rs.getString(3));
+                userList.add(user);
+            }
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return userList;
     }
 
     @Override
@@ -55,7 +73,7 @@ public class UserDaoImpl implements UserDao {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user= new User(); 
+                user = new User();
                 user.setId(rs.getLong(1));
                 user.setName(rs.getString(2));
                 user.setPassword(rs.getString(3));
@@ -65,11 +83,6 @@ public class UserDaoImpl implements UserDao {
             ex.printStackTrace();
         }
         return user;
-    }
-
-    @Override
-    public void editUser() {
-
     }
 
 }

@@ -174,12 +174,8 @@ public class UserController {
     }
 
     public static User editUsers(String username) {
-        User u = null;
-        for (User user : userRepository.getUserList()) {
-            if (user.getName().equals(username)) {
-                u = user;
-            }
-        }
+        User u = userDao.searchUser(username);
+
         if (u == null) {
             System.out.println("User not found");
             return null;
@@ -202,74 +198,25 @@ public class UserController {
     }
 
     public static void listUsers() {
-        List<User> userList = userRepository.getUserList();
+
+        List<User> userList = userDao.getAllUserInfo();
         if (userList.isEmpty()) {
-            System.out.println("Register at least one user . . ");
+            System.out.println("No users is registered . . .");
+
+        } else {
+            System.out.println(userList.toString());
+
         }
-        for (User user : userList) {
-            user.getId();
-            user.getName();
-            user.getPassword();
-            System.out.println(user.toString());
-        }
+
+//        List<User> userList = userRepository.getUserList();
+//        if (userList.isEmpty()) {
+//            System.out.println("Register at least one user . . ");
+//        }
+//        for (User user : userList) {
+//            user.getId();
+//            user.getName();
+//            user.getPassword();
+//            System.out.println(user.toString());
+//        }
     }
 }
-
-//    public static void main(String[] args) {
-//        int choice;
-//        System.out.println("\n 1-Admin \n 2-Student \n3-Exit");
-//        choice = sc.nextInt();
-//
-//        switch (choice) {
-//            case 1:
-//                char ch;
-//                System.out.println("Admin Registration");
-//                System.out.println("A-  Users Register \n B- Search Users \n C- Edit Users \n D- List Users ");
-//                ch = sc.next().charAt(0);
-//                switch (ch) {
-//                    case 'A':
-//                        User user = usersRegister();
-//                        userRepository.createUser(user);
-//                        break;
-//                    case 'B':
-//                        System.out.println("Enter User name");
-//                        String uName = sc.next();
-//                        searchUsers(uName);
-//                        break;
-//                    case 'C':
-//                        System.out.println("Enter User name");
-//                        uName = sc.next();
-//                        user = editUsers(uName);
-//                        if (user != null) {
-//                            userRepository.editUsers(user);
-//                        }
-//                        break;
-//                    case 'D':
-//                        listUsers();
-//                        break;
-//
-//                    default:
-//                        System.out.println("Wrong choice");
-//                }
-//                break;
-//            case 2:
-//                char ch1;
-//                System.out.println("Student Registration :");
-//                System.out.println("a-Add Student \n b-View Student");
-//                ch1 = sc.next().charAt(0);
-//                switch (ch1) {
-//                    case 'a':
-//                        studentController.addStudent();
-//                        break;
-//                    case 'b':
-//                        studentController.listStudent();
-//                        break;
-//                    default:
-//                        System.out.println("Wrong choice : ");
-//                }
-//                break;
-//
-//            case 3:
-//                exit(0);
-//        }
-//    }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface StudentDao {
 
-    public void saveStudentInfo();
+    public void saveStudentInfo(Student student);
 
     public void viewStudentClass();
 

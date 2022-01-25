@@ -18,8 +18,7 @@ public interface UserDao {
 
     public User searchUser(String username);
 
-    public void editUser();
-
     public List<User> getAllUserInfo();
+
 
 }

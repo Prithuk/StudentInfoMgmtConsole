@@ -5,17 +5,24 @@
  */
 package com.prithu.sim.controller;
 
+import com.prithu.sim.dao.StudentDao;
+import com.prithu.sim.dao.StudentDaoImpl;
 import com.prithu.sim.dto.Student;
 import com.prithu.sim.repository.MarksRepository;
 import com.prithu.sim.repository.StudentRepository;
+import com.prithu.sim.util.DbUtil;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Scanner;
+import java.sql.ResultSet;
 
 public class StudentController {
 
     static MarksRepository marksRepository = new MarksRepository();
     static Scanner sc = new Scanner(System.in);
     static StudentRepository studentRepository = new StudentRepository();
+    static StudentDao studentDao = new StudentDaoImpl();
+    PreparedStatement ps = null;
 
     public Student addStudent() {
         Student student = new Student();
@@ -42,36 +49,54 @@ public class StudentController {
         int sclass = sc.nextInt();
         student.setsClass(sclass);
 
-        studentRepository.getStudentList().add(student);
+        studentDao.saveStudentInfo(student);
 
-        System.out.println(student.toString());
+//        studentRepository.getStudentList().add(student);
+//        System.out.println(student.toString());
         return student;
 
     }
 
     public void listStudent() {
-        List<Student> studentList = studentRepository.getStudentList();
+
+        List<Student> studentList = studentDao.getAllStudentInfo();
         if (studentList.isEmpty()) {
             System.out.println("Register at least one student . . ");
-            return;
+
+        } else {
+
+            System.out.println(studentList.toString());
         }
-        for (Student student : studentList) {
-            student.getsName();
-            student.getsEmail();
-            student.getsPhone();
-            System.out.println(student.toString());
-        }
+
     }
 
     public void viewStudentClass(int id, String username) {
-
-        for (Student student : studentRepository.getStudentList()) {
-            if (student.getsID() == id && student.getsName().equals(username)) {
-                System.out.println("Student class is : " + student.getsClass());
-                return;
+        String sql = "select student_class from student_info where student_id=? AND student_name=?";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ps.setLong(1, id);
+            ps.setString(2, username);
+            ResultSet rs = ps.executeQuery();
+            int student = 0;
+            while (rs.next()) {
+                student = rs.getInt(1);
             }
+            if (student == 0) {
+                System.out.println("Student class not found");
+            } else {
+                System.out.println("Student Class is : " + student);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        System.out.println("Class not found");
+
+//        for (Student student : studentRepository.getStudentList()) {
+//            if (student.getsID() == id && student.getsName().equals(username)) {
+//                System.out.println("Student class is : " + student.getsClass());
+//                return;
+//            }
+//        }
+//        System.out.println("Class not found");
     }
 
     public void ListAllStudentInfo() {
