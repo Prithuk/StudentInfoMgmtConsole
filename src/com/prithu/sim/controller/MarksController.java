@@ -5,14 +5,10 @@
  */
 package com.prithu.sim.controller;
 
-import static com.prithu.sim.controller.SubjectController.subjectRepository;
-import static com.prithu.sim.controller.StudentController.studentRepository;
 import com.prithu.sim.dao.MarksDao;
 import com.prithu.sim.dao.MarksDaoImpl;
 
 import com.prithu.sim.dto.Marks;
-import com.prithu.sim.dto.Student;
-import com.prithu.sim.dto.Subject;
 import com.prithu.sim.repository.MarksRepository;
 import java.util.Scanner;
 
@@ -24,6 +20,7 @@ public class MarksController {
 
     MarksDao marksDao = new MarksDaoImpl();
     Scanner sc = new Scanner(System.in);
+    Marks marks = new Marks();
     //static StudentRepository studentRepository = new StudentRepository();
 
 //    SubjectRepository subjectRepository1;
@@ -43,17 +40,25 @@ public class MarksController {
 //    }
 
     public void addMarks() {
-        for (Student student : studentRepository.getStudentList()) {
-            System.out.println("Student name is :" + student.getsName());
+        System.out.println("Enter student id");
+        Long sid = sc.nextLong();
+        marks.setStudentId(sid);
+        System.out.println("Enter Subject id");
+        Long subId = sc.nextLong();
+        marks.setSubjectId(subId);
+        System.out.println("Enter Marks for Subject");
+        float submarks = sc.nextFloat();
+        marks.setSubMarks(submarks);
+        marksDao.addMarks(marks);
 
-            for (Subject subject : subjectRepository.getSubjectList()) {
-                System.out.println("Enter marks for subject :" + subject.getSubName());
-                float submarks = sc.nextFloat();
-                Marks marks = new Marks(student.getsID(), subject.getId(), submarks);
-                marksDao.addMarks(marks);
+//        for (Student student : studentRepository.getStudentList()) {
+//            System.out.println("Student name is :" + student.getsName());
+//
+//            for (Subject subject : subjectRepository.getSubjectList()) {
+//                System.out.println("Enter marks for subject :" + subject.getSubName());
+//                float submarks = sc.nextFloat();
+//                Marks marks = new Marks(student.getsID(), subject.getId(), submarks);
+//                
 //                marksRepository.getMarkList().add(marks);
-
-            }
-        }
     }
 }

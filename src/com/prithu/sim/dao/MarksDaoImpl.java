@@ -28,6 +28,7 @@ public class MarksDaoImpl implements MarksDao {
             ps.setLong(2, marks.getSubjectId());
             ps.setFloat(3, marks.getSubMarks());
             ps.executeUpdate();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
