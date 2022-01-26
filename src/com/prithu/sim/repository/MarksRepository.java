@@ -44,6 +44,27 @@ public class MarksRepository {
         return markList;
     }
 
+    public List<Marks> getMarkListByStudent(Student student) {
+        List<Marks> markList = new ArrayList<>();
+        String sql = "select * from marks where student_id = ?";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ps.setLong(1, student.getsID());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Marks marks = new Marks();
+                marks.setStudentId(rs.getLong(1));
+                marks.setSubjectId(rs.getLong(2));
+                marks.setSubMarks(rs.getLong(3));
+                markList.add(marks);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return markList;
+    }
+
     static MarksController marksController = new MarksController();
 
     SubjectRepository subjectRepository;
@@ -65,19 +86,21 @@ public class MarksRepository {
     public void displayInfo(Student student) {
         System.out.println("Result:" + student.getsName());
         System.out.println("Subject" + "\t" + "Marks");
-        for (Marks marks : getMarkList()) {
-            if (marks.getStudentId().equals(student.getsID())) {
-                System.out.println(marks.getSubjectId() + "\t" + marks.getSubMarks());
-            }
+        List<Marks> markList = getMarkListByStudent(student);
+
+        for (Marks marks : markList) {
+            System.out.println(marks.getSubjectId() + "\t" + marks.getSubMarks());
         }
-        System.out.println("total marks :" + getTotalMarks(student));
-        System.out.println("Divison is :" + getDivison(student));
-        System.out.println("Percentage is :" + getPercentage(student));
+        System.out.println("total marks :" + getTotalMarks(markList));
+
+        List<Long> subList = getStudentSubjectsMap(markList).getOrDefault(student.getsID(), new ArrayList<>());
+        float totalSubject = subList.size();
+        float percent = getPercentage(markList, totalSubject);
+        System.out.println("Percentage is :" + percent);
+        System.out.println("Divison is :" + getDivison(percent));
     }
 
-    public String getDivison(Student student) {
-
-        float percent = getPercentage(student);
+    public String getDivison(float percent) {
 
         if (percent >= 80 && percent < 100) {
             return "Distinction";
@@ -92,15 +115,12 @@ public class MarksRepository {
         }
     }
 
-    public float getTotalMarks(Student student) {
+    public float getTotalMarks(List<Marks> markList) {
         float total = 0;
-        for (Marks marks : getMarkList()) {
-            if (marks.getStudentId().equals(student.getsID())) {
-                total = total + marks.getSubMarks();
-            }
+        for (Marks marks : markList) {
+            total = total + marks.getSubMarks();
         }
         return total;
-
     }
 
     public List<Long> getUnqSubjectsForStd(Student student, List<Marks> marksList) {
@@ -122,7 +142,6 @@ public class MarksRepository {
         }
         return stds;
     }
-    //key, value
 
     public Map<Long, List<Long>> getStudentSubjectsMap(List<Marks> marks) {
         Map<Long, List<Long>> studentSubMap = new HashMap<>();
@@ -135,12 +154,8 @@ public class MarksRepository {
         return studentSubMap;
     }
 
-    public float getPercentage(Student student) {
-        float totalMarks = getTotalMarks(student);
-
-        //  float totalSubject = getUnqSubjectsForStd(student, getMarkList()).size();
-        List<Long> subList = getStudentSubjectsMap(getMarkList()).getOrDefault(student.getsID(), new ArrayList<>());
-        float totalSubject = subList.size();
+    public float getPercentage(List<Marks> markList, float totalSubject) {
+        float totalMarks = getTotalMarks(markList);
         float percentage = (totalMarks / (totalSubject * 100)) * 100;
         return percentage;
     }
