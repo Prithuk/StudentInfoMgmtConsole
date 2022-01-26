@@ -9,8 +9,11 @@ import java.sql.ResultSet;
 import com.prithu.sim.dto.Student;
 import com.prithu.sim.util.DbUtil;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,19 +22,28 @@ import java.util.List;
 public class StudentRepository {
 
     PreparedStatement ps = null;
-    private List<Student> studentList = new ArrayList<>();
 
     public List<Student> getStudentList() {
+        List<Student> studentList = new ArrayList<>();
+        String sql = "select * from student_info";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Student student = new Student();
+                student.setsID(rs.getLong(1));
+                student.setsName(rs.getString(2));
+                student.setsClass(rs.getInt(3));
+                student.setsEmail(rs.getString(4));
+                student.setsPhone(rs.getLong(5));
+                studentList.add(student);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return studentList;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
-    }
-
-    public StudentRepository() {
-        this.studentList = new ArrayList<>();
-
     }
 
     public Long getSmaxId() {

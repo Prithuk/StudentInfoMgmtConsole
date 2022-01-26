@@ -8,6 +8,9 @@ package com.prithu.sim.repository;
 import com.prithu.sim.controller.MarksController;
 import com.prithu.sim.dto.Marks;
 import com.prithu.sim.dto.Student;
+import com.prithu.sim.util.DbUtil;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,14 +22,26 @@ import java.util.Map;
  */
 public class MarksRepository {
 
-    private List<Marks> markList = new ArrayList<>();
+    PreparedStatement ps = null;
 
     public List<Marks> getMarkList() {
-        return markList;
-    }
+        List<Marks> markList = new ArrayList<>();
+        String sql = "select * from marks";
+        try {
+            ps = DbUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Marks marks = new Marks();
+                marks.setStudentId(rs.getLong(1));
+                marks.setSubjectId(rs.getLong(2));
+                marks.setSubMarks(rs.getLong(3));
+                markList.add(marks);
+            }
 
-    public void setMarkList(List<Marks> markList) {
-        this.markList = markList;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return markList;
     }
 
     static MarksController marksController = new MarksController();
@@ -48,16 +63,16 @@ public class MarksRepository {
     }
 
     public void displayInfo(Student student) {
+        System.out.println("Result:" + student.getsName());
+        System.out.println("Subject" + "\t" + "Marks");
         for (Marks marks : getMarkList()) {
-            System.out.println("Result:" + student.getsName());
-            System.out.println("Subject" + "\t" + "Marks");
             if (marks.getStudentId().equals(student.getsID())) {
                 System.out.println(marks.getSubjectId() + "\t" + marks.getSubMarks());
-                System.out.println("total marks :" + getTotalMarks(student));
-                System.out.println("Divison is :" + getDivison(student));
-                System.out.println("Percentage is :" + getPercentage(student));
             }
         }
+        System.out.println("total marks :" + getTotalMarks(student));
+        System.out.println("Divison is :" + getDivison(student));
+        System.out.println("Percentage is :" + getPercentage(student));
     }
 
     public String getDivison(Student student) {
@@ -84,7 +99,6 @@ public class MarksRepository {
                 total = total + marks.getSubMarks();
             }
         }
-        System.out.println("total marks is :" + total);
         return total;
 
     }
@@ -128,7 +142,6 @@ public class MarksRepository {
         List<Long> subList = getStudentSubjectsMap(getMarkList()).getOrDefault(student.getsID(), new ArrayList<>());
         float totalSubject = subList.size();
         float percentage = (totalMarks / (totalSubject * 100)) * 100;
-        System.out.println("Percentage is : " + percentage);
         return percentage;
     }
 }
