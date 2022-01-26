@@ -105,7 +105,7 @@ public class MarksRepository {
         if (percent >= 80 && percent < 100) {
             return "--- Distinction ---";
         } else if (percent >= 60 && percent < 80) {
-            return "First Divison";
+            return "--- First Divison ---";
         } else if (percent >= 45 && percent < 60) {
             return "Second Divison";
         } else if (percent >= 40 && percent < 45) {
