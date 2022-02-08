@@ -40,7 +40,7 @@ public class SubjectRepository {
 
     public Long getSubmaxId() {
         Long max = 10L;
-        String sql = "select max(id) from Subject";
+        String sql = "select max(id) from subject";
         try {
             ps = DbUtil.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

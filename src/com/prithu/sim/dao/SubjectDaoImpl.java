@@ -25,7 +25,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public void addSubject(Subject subject) {
-        String sql = "Insert into Subject(id, name) values(?,?) ";
+        String sql = "Insert into subject(id, name) values(?,?) ";
         try {
             ps = DbUtil.getConnection().prepareStatement(sql);
             ps.setLong(1, subject.getId());
@@ -39,7 +39,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public List<Subject> viewSubject() {
-        String sql = "select * from Subject";
+        String sql = "select * from subject";
         List<Subject> subjectList = new ArrayList<>();
 
         try {

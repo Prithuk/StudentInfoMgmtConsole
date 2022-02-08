@@ -84,7 +84,7 @@ public class MarksRepository {
     }
 
     public void displayInfo(Student student) {
-        System.out.println("Result:" + student.getsName());
+        System.out.println("Result of" + student.getsName() + "is");
         System.out.println("Subject" + "\t" + "Marks");
         List<Marks> markList = getMarkListByStudent(student);
 
